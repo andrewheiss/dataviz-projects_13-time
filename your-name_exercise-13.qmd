@@ -38,7 +38,7 @@ The United States's National Oceanic and Atmospheric Administration (NOAA) runs 
 
 In this exercise, you'll use [data from the Mauna Loa Observatory](https://gml.noaa.gov/ccgg/trends/data.html) to track annual and seasonal trends in CO~2~ over time. I've provided you with three datasets that use different measurement frequencies.[^cleaning-code]
 
-[^cleaning-code]: If you're interested, you can [see the full data cleaning code here](https://github.com/andrewheiss/dataviz-projects_13-text/blob/main/build_data.R). The data is already pretty well structured and clean---all I really do is rename some columns and create some columns for dates.
+[^cleaning-code]: If you're interested, you can [see the full data cleaning code here](https://github.com/andrewheiss/dataviz-projects_13-time/blob/main/build_data.R). The data is already pretty well structured and clean---all I really do is rename some columns and create some columns for dates.
 
 Here's what you have:
 
