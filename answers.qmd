@@ -11,11 +11,26 @@ format:
       opts_chunk: 
         dev: "ragg_png"
         dpi: 300
+        fig-align: center
   typst:
     toc: true
+    toc-title: Contents
+    output-file: PREFIX_13-exercise.pdf
+    pdf-standard: ua-1
+    callout-appearance: minimal
+    include-in-header: 
+      text: |
+        // TOC stuff
+        // Make the title centered and slightly smaller than a full heading
+        #show outline: it => {
+          show heading: it => align(center, text(size: 0.75em, it))
+          it
+        }
     include-before-body: 
       text: |
-        #show link: set text(fill: rgb("e16462"))
+        // Color links with purple from viridis plasma: 
+        // viridisLite::viridis(8, option = "plasma", begin = 0.1, end = 0.9)[3]
+        #show link: set text(fill: rgb("9a169f"))
 
         // Keep track of previous heading levels
         #let last-heading-level = state("last-heading-level", 0)
@@ -121,13 +136,8 @@ Run the code chunk below to see a plot. It shows the monthly average level of re
 ```{r fig.path="images/"}
 #| label: recreate-me-plot-since-1958
 #| echo: false
-#| message: false
-#| warning: false
-#| fig-width: 5
-#| fig-height: 5
-#| out-width: "80%"
-#| fig-align: "center"
 #| ref.label: recreation-plot-since-1958
+#| opts.label: true
 ```
 
 Use the `mlo_monthly` data to recreate this plot with `ggplot()`. 
@@ -153,7 +163,12 @@ Use the `mlo_monthly` data to recreate this plot with `ggplot()`.
 #| fig-width: 5
 #| fig-height: 5
 #| out-width: "80%"
-#| fig-align: "center"
+#| fig-alt: |
+#|   Line chart of monthly average atmospheric CO₂ at Mauna Loa Observatory,
+#|   1958–2025. Date on the x-axis, CO₂ in parts per million on the y-axis.
+#|   A gray line shows raw monthly averages with visible seasonal oscillation;
+#|   a red line shows the deseasonalized trend. CO₂ has risen steadily from
+#|   approximately 315 ppm in 1958 to 425 ppm in 2025.
 
 plot_all <- ggplot(mlo_monthly, aes(x = date, y = average)) +
   geom_line(color = "gray50", linewidth = 0.3) +
@@ -180,13 +195,8 @@ Run the code chunk below to see a plot. It shows the daily CO~2~ recordings sinc
 ```{r fig.path="images/"}
 #| label: recreate-me-plot-since-2020
 #| echo: false
-#| message: false
-#| warning: false
-#| fig-width: 5
-#| fig-height: 5
-#| out-width: "80%"
-#| fig-align: "center"
 #| ref.label: recreation-plot-since-2020
+#| opts.label: true
 ```
 
 Use the `mlo_monthly` and `mlo_daily` datasets to recreate this plot with `ggplot()`. 
@@ -209,7 +219,12 @@ Use the `mlo_monthly` and `mlo_daily` datasets to recreate this plot with `ggplo
 #| fig-width: 5
 #| fig-height: 5
 #| out-width: "80%"
-#| fig-align: "center"
+#| fig-alt: |
+#|   Scatter and line chart of atmospheric CO₂ at Mauna Loa Observatory from
+#|   2020 to 2025. Date on the x-axis, CO₂ in parts per million on the
+#|   y-axis. Tiny gray dots show individual daily readings with seasonal
+#|   oscillation; a red line shows the smoothed monthly deseasonalized trend.
+#|   The upward trajectory continues at roughly 2–3 ppm per year.
 
 mlo_daily_after_2020 <- mlo_daily |>
   filter(year >= 2020)
@@ -247,13 +262,8 @@ Run the code chunk below to see a plot. It shows the seasonality inherent in CO~
 ```{r fig.path="images/"}
 #| label: recreate-me-plot-seasonality
 #| echo: false
-#| message: false
-#| warning: false
-#| fig-width: 4
-#| fig-height: 2.5
-#| out-width: "60%"
-#| fig-align: "center"
 #| ref.label: recreation-plot-seasonality
+#| opts.label: true
 ```
 
 Use the `mlo_monthly` dataset to recreate this plot with `ggplot()`. 
@@ -277,7 +287,13 @@ Use the `mlo_monthly` dataset to recreate this plot with `ggplot()`.
 #| fig-width: 4
 #| fig-height: 2.5
 #| out-width: "60%"
-#| fig-align: "center"
+#| fig-alt: |
+#|   Scatter and smooth line chart of CO₂ seasonal variation at Mauna Loa
+#|   during 2024. Months on the x-axis, difference from the annual mean CO₂
+#|   (ppm) on the y-axis. A horizontal line marks zero (the annual mean).
+#|   The smooth blue curve peaks above the mean in spring and dips below it
+#|   in early fall, reflecting Northern Hemisphere plant growth and decay
+#|   cycles.
 
 mlo_monthly_2024 <- mlo_monthly |> 
   filter(year == 2024) |> 
@@ -306,13 +322,8 @@ Run the code chunk below to see a plot. It shows the same plot you made earlier 
 ```{r fig.path="images/"}
 #| label: recreate-me-plot-combined
 #| echo: false
-#| message: false
-#| warning: false
-#| fig-width: 5
-#| fig-height: 5
-#| out-width: "80%"
-#| fig-align: "center"
 #| ref.label: recreation-plot-combined
+#| opts.label: true
 ```
 
 Use {patchwork} to recreate this plot.
@@ -335,7 +346,13 @@ Use {patchwork} to recreate this plot.
 #| fig-width: 5
 #| fig-height: 5
 #| out-width: "80%"
-#| fig-align: "center"
+#| fig-alt: |
+#|   Combined chart showing the full 1958–2025 Mauna Loa CO₂ record with a
+#|   seasonal variation inset. The main plot shows monthly CO₂ averages
+#|   (gray) and the deseasonalized trend (red) rising from 315 to 425 ppm.
+#|   A smaller inset in the upper-left shows the 2024 seasonal cycle,
+#|   illustrating how the annual sawtooth oscillation relates to the
+#|   long-term upward trend.
 
 plot_seasonality <- plot_seasonality +
   theme_bw(base_size = 7)
@@ -403,6 +420,12 @@ Hopefully you did something neat! Here's something I did with each of the datase
 #| warning: false
 #| fig-width: 8
 #| fig-height: 3
+#| fig-alt: |
+#|   Line chart of annual CO₂ emissions per capita for nine countries and
+#|   regions, roughly 1750–2023. Year on the x-axis, tonnes of CO₂ per
+#|   person on the y-axis, with one colored line per entity directly labeled
+#|   at the right edge. The United States and Canada are historically the
+#|   highest emitters; India and Kenya remain among the lowest.
 
 library(ggrepel)
 library(scales)
@@ -472,6 +495,13 @@ ggplot(
 #| warning: false
 #| fig-width: 8
 #| fig-height: 2
+#| fig-alt: |
+#|   Warming stripes visualization covering roughly 1850–2023. A single row
+#|   of vertical color tiles, one per year, colored from deep blue (cooler
+#|   years) to deep red (warmer years) relative to the 1961–1990 baseline.
+#|   The progression from predominantly blue tiles on the left to
+#|   overwhelmingly red tiles on the right illustrates accelerating global
+#|   warming through the 20th and into the 21st century.
 
 hadcrut <- read_csv("data/hadcrut.csv")
 
@@ -499,6 +529,13 @@ ggplot(hadcrut, aes(x = year, y = 1, fill = anomaly)) +
 #| warning: false
 #| fig-width: 8
 #| fig-height: 2
+#| fig-alt: |
+#|   Bar chart version of warming stripes on a dark background, spanning
+#|   roughly 1850–2023. Year on the x-axis, temperature anomaly in Celsius
+#|   on the y-axis, bars colored from blue (negative/cool anomalies) to red
+#|   (positive/warm anomalies). Mostly blue bars in the early record give way
+#|   to predominantly tall red bars in recent decades, emphasizing the
+#|   acceleration of warming.
 
 # Plot the warming stripes as bars
 ggplot(hadcrut, aes(x = year, y = anomaly, fill = anomaly)) +
